@@ -9,7 +9,7 @@
 - **问题**: 2038年1月19日后会发生整数溢出，导致时间回绕到1901年
 - **影响**: 所有使用32位时间戳的程序和库都会受影响
 
-## t64转换解决方案
+### t64转换解决方案
 
 Ubuntu 24.04引入了**t64包**（64位时间戳）来解决这个问题：
 - **t64包**: 使用64位 `time_t`，支持到292,277,026,596年
@@ -35,57 +35,6 @@ sudo apt install gcc-multilib g++-multilib
 sudo dpkg --add-architecture i386
 sudo apt update
 sudo apt install gcc-i686-linux-gnu g++-i686-linux-gnu
-```
-
-**Qt5 开发环境:**
-```bash
-# 安装 Qt5 开发包
-sudo apt install qtbase5-dev qt5-qmake
-
-# 安装 32 位 Qt5 运行时库（用于交叉编译）
-sudo apt install libqt5widgets5:i386 libqt5core5t64:i386 libqt5gui5t64:i386
-```
-
-### Qt5 32位交叉编译解决方案
-
-在Ubuntu 24.04中，Qt5库已全面转换为t64版本（64位时间戳支持），解决2038年时间溢出问题。本项目展示了在新系统上编译32位Qt5程序的两种方法：
-
-#### 方案一：使用t64包（推荐）
-**优点**: 官方支持，解决2038年问题，兼容性好
-**缺点**: 包名包含"t64"后缀
-
-```bash
-# 安装32位t64版本Qt5库
-sudo apt install libqt5widgets5t64:i386 libqt5core5t64:i386 libqt5gui5t64:i386
-
-# 创建开发链接符号（本项目已自动处理）
-sudo ln -sf /usr/lib/i386-linux-gnu/libQt5Core.so.5 /usr/lib/i386-linux-gnu/libQt5Core.so
-sudo ln -sf /usr/lib/i386-linux-gnu/libQt5Gui.so.5 /usr/lib/i386-linux-gnu/libQt5Gui.so  
-sudo ln -sf /usr/lib/i386-linux-gnu/libQt5Widgets.so.5 /usr/lib/i386-linux-gnu/libQt5Widgets.so
-```
-
-#### 方案二：使用传统兼容包（理论方案）
-**优点**: 无t64后缀，与旧系统一致
-**缺点**: Ubuntu 24.04中已不可用，存在2038年问题
-
-```bash
-# 注意：在Ubuntu 24.04中这些包已不存在
-# sudo apt install libqt5widgets5:i386 libqt5core5:i386 libqt5gui5:i386
-```
-
-**本项目采用方案一**，通过以下技术实现32位Qt5交叉编译：
-1. 使用64位Qt5头文件（与32位兼容）
-2. 链接32位t64版本Qt5库
-3. 手动编译避开qmake配置复杂性
-4. 自动创建必要的开发符号链接
-
-**CentOS/RHEL/Fedora:**
-```bash
-# Fedora
-sudo dnf install glibc-devel.i686 libgcc.i686
-
-# CentOS/RHEL
-sudo yum install glibc-devel.i686 libgcc.i686
 ```
 
 ## 运行环境说明
@@ -196,6 +145,50 @@ test_length_64bit: ELF 64-bit LSB executable, x86-64
 - 使用现代 C++ 特性（STL容器、智能指针、类）
 - 显示不同架构下基本数据类型的大小差异
 - 验证交叉编译的正确性
+
+
+
+## Qt5 开发环境:
+```bash
+# 安装 Qt5 开发包
+sudo apt install qtbase5-dev qt5-qmake
+
+# 安装 32 位 Qt5 运行时库（用于交叉编译）
+sudo apt install libqt5widgets5:i386 libqt5core5t64:i386 libqt5gui5t64:i386
+```
+
+### Qt5 32位交叉编译解决方案
+
+在Ubuntu 24.04中，Qt5库已全面转换为t64版本（64位时间戳支持），解决2038年时间溢出问题。本项目展示了在新系统上编译32位Qt5程序的两种方法：
+
+#### 方案一：使用t64包（推荐）
+**优点**: 官方支持，解决2038年问题，兼容性好
+**缺点**: 包名包含"t64"后缀
+
+```bash
+# 安装32位t64版本Qt5库
+sudo apt install libqt5widgets5t64:i386 libqt5core5t64:i386 libqt5gui5t64:i386
+
+# 创建开发链接符号（本项目已自动处理）
+sudo ln -sf /usr/lib/i386-linux-gnu/libQt5Core.so.5 /usr/lib/i386-linux-gnu/libQt5Core.so
+sudo ln -sf /usr/lib/i386-linux-gnu/libQt5Gui.so.5 /usr/lib/i386-linux-gnu/libQt5Gui.so  
+sudo ln -sf /usr/lib/i386-linux-gnu/libQt5Widgets.so.5 /usr/lib/i386-linux-gnu/libQt5Widgets.so
+```
+
+#### 方案二：使用传统兼容包（理论方案）
+**优点**: 无t64后缀，与旧系统一致
+**缺点**: Ubuntu 24.04中已不可用，存在2038年问题
+
+```bash
+# 注意：在Ubuntu 24.04中这些包已不存在
+# sudo apt install libqt5widgets5:i386 libqt5core5:i386 libqt5gui5:i386
+```
+
+**本项目采用方案一**，通过以下技术实现32位Qt5交叉编译：
+1. 使用64位Qt5头文件（与32位兼容）
+2. 链接32位t64版本Qt5库
+3. 手动编译避开qmake配置复杂性
+4. 自动创建必要的开发符号链接
 
 ### Qt5 GUI 演示
 
