@@ -1,6 +1,8 @@
 # Compiled binaries
 test_length_32bit
 test_length_64bit
+demo_32bit
+demo_64bit
 
 # Object files
 *.o

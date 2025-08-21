@@ -86,17 +86,38 @@ test_length_64bit: ELF 64-bit LSB executable, x86-64
 
 ## 构建和运行
 
+### C 语言演示
+
 ```bash
 # 编译 32 位版本
 ./build_64bit_to_32bit.sh
 
 # 编译 64 位版本  
-./build_64bit_to_64bit.sh
+./build_native.sh
 
 # 运行测试
 ./test_length_32bit  # 应该输出: Long size: 4
 ./test_length_64bit  # 应该输出: Long size: 8
 ```
+
+### C++ 语言演示
+
+```bash
+# 编译 32 位 C++ 版本
+./build_cpp_32bit.sh
+
+# 编译 64 位 C++ 版本
+./build_cpp_native.sh
+
+# 运行 C++ 测试
+./demo_32bit  # 显示 32 位架构的数据类型大小
+./demo_64bit  # 显示 64 位架构的数据类型大小
+```
+
+**C++ 演示程序特点:**
+- 使用现代 C++ 特性（STL容器、智能指针、类）
+- 显示不同架构下基本数据类型的大小差异
+- 验证交叉编译的正确性
 
 ## 常见问题
 
