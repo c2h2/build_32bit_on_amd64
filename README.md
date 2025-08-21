@@ -93,34 +93,55 @@ test_length_64bit: ELF 64-bit LSB executable, x86-64
 
 如果 32 位程序出现 "No such file or directory" 错误，说明缺少 32 位运行时库。
 
+## 项目结构
+
+```
+.
+├── src/                    # 源文件目录
+│   ├── test_length.c      # C 语言演示程序
+│   ├── demo.cpp           # C++ 演示程序
+│   ├── qt_demo_simple.cpp # Qt5 GUI 演示程序
+│   └── qt_demo_simple.pro # Qt5 项目文件
+├── scripts/               # 构建脚本目录
+│   ├── build_64bit_to_32bit.sh  # C 32位编译脚本
+│   ├── build_native.sh          # C 64位编译脚本
+│   ├── build_cpp_32bit.sh       # C++ 32位编译脚本
+│   ├── build_cpp_native.sh      # C++ 64位编译脚本
+│   ├── build_qt_32bit.sh        # Qt5 32位编译脚本
+│   ├── build_qt_native.sh       # Qt5 64位编译脚本
+│   └── build_all.sh             # 一键构建所有项目
+├── build/                 # 构建输出目录（由构建脚本创建）
+└── README.md             # 项目说明文档
+```
+
 ## 构建和运行
 
 ### C 语言演示
 
 ```bash
 # 编译 32 位版本
-./build_64bit_to_32bit.sh
+./scripts/build_64bit_to_32bit.sh
 
 # 编译 64 位版本  
-./build_native.sh
+./scripts/build_native.sh
 
 # 运行测试
-./test_length_32bit  # 应该输出: Long size: 4
-./test_length_64bit  # 应该输出: Long size: 8
+./build/test_length_32bit  # 应该输出: Long size: 4
+./build/test_length_64bit  # 应该输出: Long size: 8
 ```
 
 ### C++ 语言演示
 
 ```bash
 # 编译 32 位 C++ 版本
-./build_cpp_32bit.sh
+./scripts/build_cpp_32bit.sh
 
 # 编译 64 位 C++ 版本
-./build_cpp_native.sh
+./scripts/build_cpp_native.sh
 
 # 运行 C++ 测试
-./demo_32bit  # 显示 32 位架构的数据类型大小
-./demo_64bit  # 显示 64 位架构的数据类型大小
+./build/demo_32bit  # 显示 32 位架构的数据类型大小
+./build/demo_64bit  # 显示 64 位架构的数据类型大小
 ```
 
 **C++ 演示程序特点:**
@@ -132,14 +153,14 @@ test_length_64bit: ELF 64-bit LSB executable, x86-64
 
 ```bash
 # 编译 32 位 Qt5 版本
-./build_qt_32bit.sh
+./scripts/build_qt_32bit.sh
 
 # 编译 64 位 Qt5 版本
-./build_qt_native.sh
+./scripts/build_qt_native.sh
 
 # 运行 Qt5 GUI 程序
-./qt_demo_32bit  # 32 位 Qt5 GUI 应用
-./qt_demo_64bit  # 64 位 Qt5 GUI 应用
+./build/qt_demo_32bit  # 32 位 Qt5 GUI 应用
+./build/qt_demo_64bit  # 64 位 Qt5 GUI 应用
 ```
 
 **Qt5 演示程序特点:**
@@ -152,7 +173,7 @@ test_length_64bit: ELF 64-bit LSB executable, x86-64
 
 ```bash
 # 构建所有项目（C、C++、Qt5 的 32 位和 64 位版本）
-./build_all.sh
+./scripts/build_all.sh
 ```
 
 这个脚本会自动构建所有演示程序并显示构建状态，方便一次性验证整个交叉编译环境。

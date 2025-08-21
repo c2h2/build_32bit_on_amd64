@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# Change to project root directory
+PROJECT_ROOT="$(dirname "$(dirname "$(realpath "$0")")")"
+cd "$PROJECT_ROOT"
+
 echo "========================================="
 echo "Building All Cross-compilation Demos"
 echo "========================================="
@@ -22,12 +26,12 @@ echo "--------------------------------"
 
 # Build C 32-bit
 echo "Building C 32-bit..."
-./build_64bit_to_32bit.sh
+./scripts/build_64bit_to_32bit.sh
 check_build "C 32-bit"
 
 # Build C 64-bit
 echo "Building C 64-bit..."
-./build_native.sh
+./scripts/build_native.sh
 check_build "C 64-bit"
 
 echo ""
@@ -36,12 +40,12 @@ echo "----------------------------------"
 
 # Build C++ 32-bit
 echo "Building C++ 32-bit..."
-./build_cpp_32bit.sh
+./scripts/build_cpp_32bit.sh
 check_build "C++ 32-bit"
 
 # Build C++ 64-bit
 echo "Building C++ 64-bit..."
-./build_cpp_native.sh
+./scripts/build_cpp_native.sh
 check_build "C++ 64-bit"
 
 echo ""
@@ -50,12 +54,12 @@ echo "-------------------------"
 
 # Build Qt5 32-bit
 echo "Building Qt5 32-bit..."
-./build_qt_32bit.sh
+./scripts/build_qt_32bit.sh
 check_build "Qt5 32-bit"
 
 # Build Qt5 64-bit
 echo "Building Qt5 64-bit..."
-./build_qt_native.sh
+./scripts/build_qt_native.sh
 check_build "Qt5 64-bit"
 
 echo ""
@@ -68,19 +72,19 @@ if [ -z "$FAILED_BUILDS" ]; then
     echo ""
     echo "Generated binaries:"
     echo "  C Language:"
-    echo "    - test_length_32bit (32-bit)"
-    echo "    - test_length_64bit (64-bit)"
+    echo "    - build/test_length_32bit (32-bit)"
+    echo "    - build/test_length_64bit (64-bit)"
     echo "  C++ Language:"
-    echo "    - demo_32bit (32-bit)"
-    echo "    - demo_64bit (64-bit)"
+    echo "    - build/demo_32bit (32-bit)"
+    echo "    - build/demo_64bit (64-bit)"
     echo "  Qt5 GUI:"
-    echo "    - qt_demo_32bit (32-bit)"
-    echo "    - qt_demo_64bit (64-bit)"
+    echo "    - build/qt_demo_32bit (32-bit)"
+    echo "    - build/qt_demo_64bit (64-bit)"
     echo ""
     echo "Verification commands:"
-    echo "  file test_length_32bit test_length_64bit"
-    echo "  file demo_32bit demo_64bit"
-    echo "  file qt_demo_32bit qt_demo_64bit"
+    echo "  file build/test_length_32bit build/test_length_64bit"
+    echo "  file build/demo_32bit build/demo_64bit"
+    echo "  file build/qt_demo_32bit build/qt_demo_64bit"
 else
     echo "⚠️  Some builds failed:$FAILED_BUILDS"
     echo ""
