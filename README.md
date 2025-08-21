@@ -161,7 +161,7 @@ sudo apt install libqt5widgets5:i386 libqt5core5t64:i386 libqt5gui5t64:i386
 
 在Ubuntu 24.04中，Qt5库已全面转换为t64版本（64位时间戳支持），解决2038年时间溢出问题。本项目展示了在新系统上编译32位Qt5程序的两种方法：
 
-#### 方案一：使用t64包（推荐）
+#### 方案A：使用t64包（推荐）
 **优点**: 官方支持，解决2038年问题，兼容性好
 **缺点**: 包名包含"t64"后缀
 
@@ -175,14 +175,31 @@ sudo ln -sf /usr/lib/i386-linux-gnu/libQt5Gui.so.5 /usr/lib/i386-linux-gnu/libQt
 sudo ln -sf /usr/lib/i386-linux-gnu/libQt5Widgets.so.5 /usr/lib/i386-linux-gnu/libQt5Widgets.so
 ```
 
-#### 方案二：使用传统兼容包（理论方案）
+#### 方案B：使用传统兼容包（（旧 ABI，t32）
 **优点**: 无t64后缀，与旧系统一致
 **缺点**: Ubuntu 24.04中已不可用，存在2038年问题
 
+做法是把 旧 32 位用户态 放进容器/chroot 里（如 Ubuntu 22.04 Jammy i386 或 Debian 12 Bookworm i386），在那里安装非 t64 的 Qt 包，再运行你的旧 32-bit 程序。不要在 24.04 宿主机上强行混装旧 ABI。
+
+选项 B1：Jammy i386 chroot（Ubuntu 22.04）
 ```bash
-# 注意：在Ubuntu 24.04中这些包已不存在
-# sudo apt install libqt5widgets5:i386 libqt5core5:i386 libqt5gui5:i386
-```
+sudo apt install debootstrap
+sudo debootstrap --arch=i386 jammy /opt/jammy-i386 http://archive.ubuntu.com/ubuntu/
+sudo chroot /opt/jammy-i386
+apt update
+apt install libqt5core5a libqt5gui5 libqt5widgets5  # 旧 ABI 套件
+···
+
+
+选项 B2：Jammy 的 libqt5core5a:i386 等仍为旧命名/旧 ABI。
+```bash
+选项 B2：Debian Bookworm i386 chroot
+sudo apt install debootstrap
+sudo debootstrap --arch=i386 bookworm /opt/bookworm-i386 http://deb.debian.org/debian
+sudo chroot /opt/bookworm-i386
+apt update
+apt install libqt5core5a libqt5gui5 libqt5widgets5
+···
 
 **本项目采用方案一**，通过以下技术实现32位Qt5交叉编译：
 1. 使用64位Qt5头文件（与32位兼容）
