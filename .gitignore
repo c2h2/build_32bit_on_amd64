@@ -3,6 +3,18 @@ test_length_32bit
 test_length_64bit
 demo_32bit
 demo_64bit
+qt_demo_32bit
+qt_demo_64bit
+
+# Qt build directories
+build_32bit/
+build_64bit/
+
+# Qt generated files
+*.moc
+moc_*.cpp
+ui_*.h
+qrc_*.cpp
 
 # Object files
 *.o

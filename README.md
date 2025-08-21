@@ -22,6 +22,15 @@ sudo apt update
 sudo apt install gcc-i686-linux-gnu g++-i686-linux-gnu
 ```
 
+**Qt5 开发环境:**
+```bash
+# 安装 Qt5 开发包
+sudo apt install qtbase5-dev qt5-qmake
+
+# 安装 32 位 Qt5 运行时库（用于交叉编译）
+sudo apt install libqt5widgets5:i386 libqt5core5t64:i386 libqt5gui5t64:i386
+```
+
 **CentOS/RHEL/Fedora:**
 ```bash
 # Fedora
@@ -119,6 +128,35 @@ test_length_64bit: ELF 64-bit LSB executable, x86-64
 - 显示不同架构下基本数据类型的大小差异
 - 验证交叉编译的正确性
 
+### Qt5 GUI 演示
+
+```bash
+# 编译 32 位 Qt5 版本
+./build_qt_32bit.sh
+
+# 编译 64 位 Qt5 版本
+./build_qt_native.sh
+
+# 运行 Qt5 GUI 程序
+./qt_demo_32bit  # 32 位 Qt5 GUI 应用
+./qt_demo_64bit  # 64 位 Qt5 GUI 应用
+```
+
+**Qt5 演示程序特点:**
+- 完整的 GUI 应用程序，包含窗口、按钮、文本框等控件
+- 实时显示当前架构信息和数据类型大小
+- 演示交互式界面在不同架构下的兼容性
+- 包含进度条、滑块等动态元素
+
+### 一键构建所有演示
+
+```bash
+# 构建所有项目（C、C++、Qt5 的 32 位和 64 位版本）
+./build_all.sh
+```
+
+这个脚本会自动构建所有演示程序并显示构建状态，方便一次性验证整个交叉编译环境。
+
 ## 常见问题
 
 1. **编译错误**: 缺少交叉编译工具链
@@ -129,3 +167,12 @@ test_length_64bit: ELF 64-bit LSB executable, x86-64
 
 3. **链接错误**: 找不到 32 位库文件
    - 解决: 确保安装了完整的 32 位开发库
+
+4. **Qt5 编译错误**: 缺少 Qt5 开发包
+   - 解决: `sudo apt install qtbase5-dev qt5-qmake`
+
+5. **Qt5 32位编译失败**: 缺少 32 位 Qt5 库
+   - 解决: `sudo apt install libqt5widgets5:i386 libqt5core5t64:i386 libqt5gui5t64:i386`
+
+6. **Qt5 程序无法运行**: 缺少 GUI 环境
+   - 解决: 确保有 X11 或 Wayland 显示环境，或使用 `export DISPLAY=:0`
