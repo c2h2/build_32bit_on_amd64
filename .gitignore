@@ -1,0 +1,25 @@
+# Compiled binaries
+test_length_32bit
+test_length_64bit
+
+# Object files
+*.o
+*.obj
+
+# Executables
+*.exe
+*.out
+*.app
+
+# Debug files
+*.dSYM/
+*.su
+*.idb
+*.pdb
+
+# Temporary files
+*~
+*.swp
+*.tmp
+
+CLAUDE.md
